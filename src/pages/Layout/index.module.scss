@@ -1,0 +1,39 @@
+.layout {
+  height: 100vh;
+
+  :global {
+    .ant-layout-header {
+      padding: 0;
+    }
+    .logo {
+      float: left;
+      width: 200px;
+      height: 60px;
+      margin: 2px 0;
+      background-image: url(~assets/logo.png);
+      background-size: cover;
+    }
+    .profile {
+      color: #fff;
+      font-weight: 700;
+      float: right;
+      span {
+        margin-right: 20px;
+      }
+      .anticon-login {
+        margin-right: 0px;
+      }
+    }
+    .ant-row-rtl .logo {
+      float: right;
+      margin: 16px 0 16px 24px;
+    }
+
+    .site-layout-background {
+      background: #fff;
+    }
+    .ant-layout {
+      height: 100%;
+    }
+  }
+}

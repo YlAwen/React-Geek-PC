@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { Navigate } from "react-router-dom";
-import { Card, Form, Input, Button, Checkbox } from "antd";
-import "./index.scss";
+import { Card, Form, Input, Button, Checkbox, message } from "antd";
+import styles from "./index.module.scss";
 import logo from "assets/logo.png";
 import { login } from "api/user";
+import { setToken } from "utils/storage";
+
 export default class Login extends Component {
   state = {
     isLogin: false,
@@ -12,7 +14,7 @@ export default class Login extends Component {
     const { onFinish } = this;
     const { isLogin } = this.state;
     return (
-      <div className="login">
+      <div className={styles.login}>
         {isLogin ? <Navigate to="/home"></Navigate> : ""}
         <Card className="login-container">
           <img src={logo} alt="" className="login-logo" />
@@ -95,12 +97,13 @@ export default class Login extends Component {
       // console.log(res);
       // 登陆成功
       // 1.保存token
-      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
       // 2.跳转到首页
       this.setState({
         isLogin: true,
       });
       // 3.提示消息
+      message.success("登陆成功！");
     } catch (error) {
       alert(error.response.data.message);
     }

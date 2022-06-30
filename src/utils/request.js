@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getToken, hasToken, removeToken } from "./storage";
+import { message } from "antd";
 
 // 创建axios实例
 const instance = axios.create({
@@ -10,6 +12,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    if (hasToken()) {
+      config.headers.Authorization = `Bearer ${getToken()}`;
+    }
     return config;
   },
   function (error) {
@@ -28,6 +33,16 @@ instance.interceptors.response.use(
   function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+
+    // token过期
+    if (error.response.status === 401) {
+      // 1.删除token
+      removeToken();
+      // 2.提示消息
+      message.error("用户信息过期,请重新登录!");
+      // 3.跳转网页
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
